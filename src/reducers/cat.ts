@@ -2,6 +2,7 @@ import * as catActions from '../actions/cat';
 
 export const initialState: CatState = {
   list: [],
+  cat: null,
   currentPage: 1,
   hasMoreCats: false,
 };
@@ -13,20 +14,16 @@ const reducer = (
 ): CatState => {
   switch (action.type) {
     case catActions.SET_CATS: {
-      // const existingCatIds = state.list.map(cat => cat.id);
-      // const uniqueCats = action.payload.reduce((accum, curr) => {
-      //   if (!existingCatIds.includes(curr.id)) return accum.concat(curr);
-      //   return accum;
-      // }, state);
-
-      // return {
-      //   ...state,
-      //   list: [...uniqueCats],
-      // }
       return {
         ...state,
         list: action.payload,
       };
+    }
+    case catActions.SET_CAT: {
+      return {
+        ...state,
+        cat: { ...action.payload },
+      }
     }
     case catActions.CLEAR_CATS: {
       return {
