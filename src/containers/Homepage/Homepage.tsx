@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Actions as breedActions } from '../../actions/breed';
 import { Actions as catActions } from '../../actions/cat';
+
+import * as breedSelectors from '../../selectors/breed';
+import * as catSelectors from '../../selectors/cat';
 
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
@@ -14,17 +17,37 @@ import Dropdown from '../../components/Dropdown';
 
 const DEFAULT_PAGE = 1;
 
-export const Homepage = (props: any) => {
-  const { breeds, loadBreeds, cats, loadCats } = props;
-  const [selectedBreed, setSelectedBreed] = useState(''); // todo get breedid from url
-  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
+interface Props {
+  breeds: Breeds,
+  loadBreeds: typeof breedActions.loadBreeds,
+  cats: Cats,
+  loadCats: typeof catActions.loadCats,
+  selectedBreedId: SelectedBreedId,
+  currentPage: CurrentPage,
+  hasMoreCats: HasMoreCats,
+  setSelectedBreedId: typeof breedActions.setSelectedBreedId,
+  setCurrentPage: typeof catActions.setCurrentPage,
+}
+
+export const Homepage: React.FC<Props> = (props) => {
+  const {
+    breeds,
+    loadBreeds,
+    cats,
+    loadCats,
+    selectedBreedId,
+    currentPage,
+    hasMoreCats,
+    setSelectedBreedId,
+    setCurrentPage,
+  } = props;
 
   useEffect(() => {
     loadBreeds();
   }, [loadBreeds]);
 
   const handleSelectBreed = (id: string) => {
-    setSelectedBreed(id);
+    setSelectedBreedId(id);
     setCurrentPage(DEFAULT_PAGE);
     loadCats(id, currentPage);
   }
@@ -32,11 +55,11 @@ export const Homepage = (props: any) => {
   const handleLoadMore = () => {
     const nextPage = currentPage + 1;
     setCurrentPage(nextPage);
-    loadCats(selectedBreed, nextPage);
+    loadCats(selectedBreedId, nextPage);
   }
 
   const hasCats = !!cats.length;
-  const hasMoreCats = hasCats && true; // todo use a prop to see more cats
+  const showLoadMore = hasCats && hasMoreCats;
 
   const renderCat = (cat: Cat, idx: number) => <CatCard key={idx} {...cat}/>;
   const renderCats = () => {
@@ -47,12 +70,12 @@ export const Homepage = (props: any) => {
     <Card >
       <Card.Body>
         <Card.Title as="h1">Cat Browser</Card.Title>
-        <Dropdown title="Breed" selected={selectedBreed} options={breeds} handleOnChange={handleSelectBreed}/>
+        <Dropdown title="Breed" selected={selectedBreedId} options={breeds} handleOnChange={handleSelectBreed}/>
         <Row>
           {renderCats()}
         </Row>
         {
-          hasMoreCats && <Row>
+          showLoadMore && <Row>
             <Col>
               <Button variant="success" disabled={!hasCats} onClick={handleLoadMore}>Load More</Button>
             </Col>
@@ -64,15 +87,20 @@ export const Homepage = (props: any) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-  breeds: state.breed,
-  cats: state.cat,
+  breeds: breedSelectors.list(state),
+  cats: catSelectors.list(state),
+  selectedBreedId: breedSelectors.selectedBreedId(state),
+  currentPage: catSelectors.currentPage(state),
+  hasMoreCats: catSelectors.hasMoreCats(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
       loadBreeds: breedActions.loadBreeds,
+      setSelectedBreedId: breedActions.setSelectedBreedId,
       loadCats: catActions.loadCats,
+      setCurrentPage: catActions.setCurrentPage,
     },
     dispatch,
   );

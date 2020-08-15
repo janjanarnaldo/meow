@@ -1,6 +1,9 @@
 import * as breedActions from '../actions/breed';
 
-export const initialState: BreedState = [];
+export const initialState: BreedState = {
+  list: [],
+  selectedBreedId: '',
+}
 
 const reducer = (
   // eslint-disable-next-line @typescript-eslint/default-param-last
@@ -9,7 +12,16 @@ const reducer = (
 ): BreedState => {
   switch (action.type) {
     case breedActions.SET_BREEDS: {
-      return action.payload;
+      return {
+        ...state,
+        list: [...action.payload],
+      }
+    }
+    case breedActions.SET_SELECTED_BREED_ID: {
+      return {
+        ...state,
+        selectedBreedId: action.payload,
+      }
     }
     default:
       return state;

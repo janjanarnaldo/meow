@@ -4,10 +4,18 @@ interface Cat {
   breedId: string;
 }
 
+type Cats = Cat[];
+
+type CurrentPage = number;
+type HasMoreCats = Boolean;
+
 interface CatState {
-  map(arg0: (cat: any) => any);
-  reduce(arg0: (accum: any, curr: any) => void, state: CatState);
-  [index: number]: Cat;
+  list: Cats,
+  currentPage: CurrentPage;
+  hasMoreCats: HasMoreCats;
+  // map(arg0: (cat: any) => any);
+  // reduce(arg0: (accum: any, curr: any) => void, state: CatState);
+  // [index: number]: Cat;
 }
 
 interface CatApiShape {

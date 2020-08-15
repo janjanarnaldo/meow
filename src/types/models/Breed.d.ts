@@ -3,6 +3,12 @@ interface Breed {
   name: string;
 }
 
+type Breeds = Breed[];
+
+type SelectedBreedId = string;
+
 interface BreedState {
-  [index: number]: Breed;
+  list: Breeds;
+  selectedBreedId: SelectedBreedId;
 }
+

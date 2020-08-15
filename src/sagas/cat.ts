@@ -1,4 +1,4 @@
-import { all, put, takeEvery, call } from 'redux-saga/effects';
+import { all, put, takeEvery, call, select } from 'redux-saga/effects';
 
 import {
   Actions as catActions,
@@ -6,16 +6,28 @@ import {
 } from '../actions/cat';
 
 import * as catService from '../services/cat';
+import * as catSelectors from '../selectors/cat';
 
 export function* loadCats({
   payload
 }: ReturnType<typeof catActions.loadCats>) {
   try {
-    const { breedId, page } = payload;
+    const { breedId } = payload;
+    const page = yield select(catSelectors.currentPage);
+
     if (page === 1) yield put(catActions.clearCats());
 
     const cats = yield call(catService.getCats, breedId, page);
-    yield put(catActions.setCats(cats));
+
+    const existingCats = yield select(catSelectors.list);
+    const existingCatIds = existingCats.map((cat: Cat) => cat.id);
+    const uniqueCats = cats.reduce((accum: Cats, curr: Cat) => {
+      if (!existingCatIds.includes(curr.id)) return accum.concat(curr);
+      return accum;
+    }, existingCats);
+
+    yield put(catActions.setCats(uniqueCats));
+    yield put(catActions.setHasMoreCats(existingCats.length !== uniqueCats.length));
   } catch (e) {
     console.error(e);
   }

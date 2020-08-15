@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 interface Props {
   title: string;
   selected: Option['id'];
-  options: [];
+  options: Array<any>;
   handleOnChange(value: Option['id']): void;
 }
 
