@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Actions as breedActions } from '../../actions/breed';
@@ -45,6 +46,14 @@ export const Homepage = (props: Props) => {
   useEffect(() => {
     loadBreeds();
   }, [loadBreeds]);
+
+  const location = useLocation();
+  useEffect(() => {
+    if (!location.search) return;
+
+    const breedId = location.search.replace('?breed=', '');
+    handleSelectBreed(breedId);
+  }, [location.search]);
 
   const handleSelectBreed = (id: string) => {
     setSelectedBreedId(id);
