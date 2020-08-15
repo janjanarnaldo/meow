@@ -8,7 +8,6 @@ export const initialState: CatState = {
 };
 
 const reducer = (
-  // eslint-disable-next-line @typescript-eslint/default-param-last
   state: CatState = initialState,
   action: catActions.Actions,
 ): CatState => {

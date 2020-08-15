@@ -6,7 +6,6 @@ export const initialState: BreedState = {
 }
 
 const reducer = (
-  // eslint-disable-next-line @typescript-eslint/default-param-last
   state: BreedState = initialState,
   action: breedActions.Actions,
 ): BreedState => {

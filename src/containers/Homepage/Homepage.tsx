@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -47,19 +47,19 @@ export const Homepage = (props: Props) => {
     loadBreeds();
   }, [loadBreeds]);
 
+  const handleSelectBreed = useCallback((id: string) => {
+    setSelectedBreedId(id);
+    setCurrentPage(DEFAULT_PAGE);
+    loadCats(id, currentPage);
+  }, [currentPage, loadCats, setCurrentPage, setSelectedBreedId]);
+
   const location = useLocation();
   useEffect(() => {
     if (!location.search) return;
 
     const breedId = location.search.replace('?breed=', '');
     handleSelectBreed(breedId);
-  }, [location.search]);
-
-  const handleSelectBreed = (id: string) => {
-    setSelectedBreedId(id);
-    setCurrentPage(DEFAULT_PAGE);
-    loadCats(id, currentPage);
-  }
+  }, [location.search, handleSelectBreed]);
 
   const handleLoadMore = () => {
     const nextPage = currentPage + 1;
