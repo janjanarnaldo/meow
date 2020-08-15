@@ -8,3 +8,8 @@ export const getCats = async (breedId: Breed['id'], page: number) => {
   );
   return (returnJSON(result) || []).map(catMapperForUI);
 }
+
+export const getCat = async(catId: Cat['id']) => {
+  const result = await theCatApi(`/images/${catId}`);
+  return catMapperForUI(returnJSON(result));
+}

@@ -1,7 +1,20 @@
 export const catMapperForUI = (data: CatApiShape) => {
+  const { id, url, breeds = [] } = data;
+  const {
+    id: breedId,
+    name: breedName,
+    origin: breedOrigin,
+    temperament: breedTemperament,
+    description: breedDescription,
+  } = breeds[0];
+
   return {
-    id: data.id,
-    url: data.url,
-    breedId: data.breeds[0].id,
+    id,
+    url,
+    breedId,
+    breedName,
+    breedOrigin,
+    breedTemperament,
+    breedDescription,
   }
 }

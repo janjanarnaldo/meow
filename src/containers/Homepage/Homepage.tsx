@@ -29,7 +29,7 @@ interface Props {
   setCurrentPage: typeof catActions.setCurrentPage,
 }
 
-export const Homepage: React.FC<Props> = (props) => {
+export const Homepage = (props: Props) => {
   const {
     breeds,
     loadBreeds,

@@ -2,6 +2,10 @@ interface Cat {
   id: string;
   url: string;
   breedId: string;
+  breedName?: string;
+  breedOrigin?: string;
+  breedTemperament?: string;
+  breedDescription?: string;
 }
 
 type Cats = Cat[];
