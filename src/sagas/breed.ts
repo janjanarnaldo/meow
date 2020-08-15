@@ -1,22 +1,18 @@
-import { all, put, takeEvery } from 'redux-saga/effects';
+import { all, put, takeEvery, call } from 'redux-saga/effects';
 
 import {
   Actions as breedActions,
   LOAD_BREEDS,
 } from '../actions/breed';
 
-// import * as authApi from 'services/authApi';
+import * as breedService from '../services/breed';
 
 export function* loadBreeds() {
   try {
-    console.log('getting breeds');
-    const breeds = [
-      { name: 'Cat' },
-    ];
-
+    const breeds = yield call(breedService.getBreeds);
     yield put(breedActions.setBreeds(breeds));
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 }
 

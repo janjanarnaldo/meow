@@ -1,5 +1,6 @@
 interface Breed {
-  name: string,
+  id: string;
+  name: string;
 }
 
 interface BreedState {
