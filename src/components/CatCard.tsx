@@ -10,7 +10,7 @@ export default function CatCard(props: Cat) {
       <Card style={{ marginBottom: '20px' }}>
         <Card.Img variant="top" src={url} />
         <Card.Body>
-          <Button variant="primary" href={id}>View details</Button>
+          <Button variant="primary" block href={id}>View details</Button>
         </Card.Body>
       </Card>
     </Col>
