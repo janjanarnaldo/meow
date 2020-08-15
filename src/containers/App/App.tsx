@@ -1,8 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from '../../logo.svg';
 import './App.css';
 
-function App() {
+import { connect } from "react-redux";
+
+function App(props: any) {
+
+  console.log(props, 'Props');
   return (
     <div className="App">
       <header className="App-header">
@@ -23,4 +27,10 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state: RootState) => {
+  return {
+    breeds: state.breed,
+  };
+};
+
+export default connect(mapStateToProps)(App);
